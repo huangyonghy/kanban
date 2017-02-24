@@ -1,0 +1,33 @@
+extends ../layouts/default
+
+block content
+    link(href="/styles/jquery-ui-1.12.1.min.css", rel="stylesheet")
+    script(src='/js/jquery/jquery-1.11.3.min.js')
+    script(src='/js/jquery/jquery-ui-1.12.1.min.js')
+    .container: .jumbotron
+        h3.text-center Add Task
+        form(method='post' action='/tasks')
+            .form-group
+                label Name
+                input(name='name' type='text').form-control
+            .form-group
+                label Description
+                textarea(name='description', rows=4).form-control
+            .form-group
+                label Model--
+                    a(href='/models') view options detail
+                select(name='model_id').form-control
+                    each model in models
+                        option(value=model._id)= model.name
+            .form-group
+                label Date_from
+                input(name='date_from' type='text' readonly=true class="datepicker").form-control
+            .form-group
+                label Date_to
+                input(name='date_to' type='text' readonly=true class="datepicker").form-control
+            .form-actions.text-center
+                button(type='submit').btn.btn-primary Commit
+    script.
+        $(function () {
+            $(".datepicker").datepicker();
+        });

@@ -1,0 +1,94 @@
+extends ../layouts/default
+
+block content
+    script(src='/js/jquery/jquery-1.11.3.min.js')
+    .container: .jumbotron
+        h3.text-center=task.name
+        table.table.table-bordered
+            thead
+                each item in model.items
+                    td=item
+            tr
+                each item in model.items
+                    if item == model.items[model.items.length - 1]
+                        td(id=item ondrop="drop(event)" ondragover="allowDrop(event)")
+                            span(id='checkItem' aria-hidden="true" draggable="true" ondragstart="drag(event)").glyphicon.glyphicon-ok
+                    else
+                        td(id=item ondrop="drop(event)" ondragover="allowDrop(event)").drag
+        .form-group
+            label User:
+            input(name='users' id='user_input' readonly=true).form-control
+        .form-group
+            select(id='user')
+                each user in users
+                    option(value=user.name)= user.name
+            span &nbsp &nbsp
+            label.btn-success(onclick='addUser()') Add
+            span &nbsp &nbsp
+            label.btn-success(onclick='deleteUser()') Delete
+        .form-actions.text-center
+            button(type='submit' onclick='postContents('+'"/tasks/'+task.name + '")').btn.btn-success Modified
+    script.
+        function allowDrop(ev) {
+            ev.preventDefault();
+        }
+
+        function drag(ev) {
+            ev.dataTransfer.setData("Text", ev.target.id);
+        }
+
+        function drop(ev) {
+            ev.preventDefault();
+            ev.stopPropagation();
+            var data = ev.dataTransfer.getData("Text");
+            ev.target.appendChild(document.getElementById(data));
+        }
+
+        function addUser() {
+            var user = $("#user")[0].value;
+            var users = $("#user_input")[0].value;
+            var user_array = [];
+            if (users) {
+                user_array = users.split(',')
+            }
+            ;
+            if (user_array.includes(user) == 0) {
+                user_array.push(user);
+            }
+            $("#user_input").val(user_array);
+        }
+        function deleteUser() {
+            var user = $("#user")[0].value;
+            var users = $("#user_input")[0].value;
+            var user_array = [];
+            if (users) {
+                user_array = users.split(',')
+            }
+            ;
+            if (user_array.indexOf(user) != -1) {
+                user_array.splice(user_array.indexOf(user), 1);
+            }
+            $("#user_input").val(user_array);
+        }
+        function postContents(url) {
+            var users = $("#user_input")[0].value;
+            var state = ($( "td" ).has('span')[0].getAttribute('id'));
+            var params = {users: users, state: state};
+            post(url, params);
+        }
+        function post(URL, PARAMS) {
+            var temp = document.createElement("form");
+            temp.action = URL;
+            temp.method = "post";
+            temp.style.display = "none";
+            for (var x in PARAMS) {
+                var opt = document.createElement("textarea");
+                opt.name = x;
+                opt.value = PARAMS[x];
+                // alert(opt.name)
+                temp.appendChild(opt);
+            }
+            document.body.appendChild(temp);
+            temp.submit();
+            return temp;
+        }

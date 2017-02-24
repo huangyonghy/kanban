@@ -1,0 +1,19 @@
+extends ../layouts/default
+
+block content
+    .container: .jumbotron
+        h3.text-center=Locals.section.toUpperCase()
+        a(href='/models/add').pull-right Add Model
+        table.table.table-bordered
+            thead
+                td ID
+                td NAME
+                td DESCRIPTION
+                td ACTION
+            each model in models
+                tr
+                    td= model.id
+                    td= model.name
+                    td= model.items.join(', ')
+                    td
+                        a(href='/models/delete?id='+model._id) DELETE

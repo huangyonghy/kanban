@@ -1,0 +1,24 @@
+extends ../layouts/default
+
+block content
+    .container: .jumbotron
+        h3.text-center=Locals.section.toUpperCase()
+        a(href='/tasks/add').pull-right Add Task
+        table.table.table-bordered
+            thead
+                td NAME
+                td DESCRIPTION
+                td Model
+                td FROM
+                td TO
+                td ACTION
+            each task in tasks
+                tr
+                    td
+                        a(href='/tasks/'+task.name)= task.name
+                    td= task.description
+                    td= task.getModelNameFromId(task.model)
+                    td= task.period_from.toLocaleDateString()
+                    td= task.period_to.toLocaleDateString()
+                    td
+                        a(href='/tasks/delete?name='+task.name) DELETE

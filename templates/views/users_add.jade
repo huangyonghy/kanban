@@ -1,0 +1,11 @@
+extends ../layouts/default
+
+block content
+    .container: .jumbotron
+        h3.text-center Add User
+        form(method='post' action='/users')
+            .form-group
+                label Name
+                input(name='name' type='text').form-control
+            .form-actions.text-center
+                button(type='submit').btn.btn-primary Commit

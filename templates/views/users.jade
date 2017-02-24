@@ -1,0 +1,17 @@
+extends ../layouts/default
+
+block content
+    .container: .jumbotron
+        h3.text-center=Locals.section.toUpperCase()
+        a(href='/users/add').pull-right Add User
+        table.table.table-bordered
+            thead
+                td ID
+                td NAME
+                td ACTION
+            each user in users
+                tr
+                    td= user._id
+                    td= user.name
+                    td
+                        a(href='/users/delete?name=' + user.name) DELETE

@@ -1,0 +1,21 @@
+extends ../layouts/default
+
+block content
+    script(src='/js/jquery/jquery-1.11.3.min.js')
+    .container: .jumbotron
+        h3.text-center Add Model
+        form(method='post' action='/models')
+            .form-group-lg
+                label Name
+                input(name='name' type='text').form-control
+            .form-group
+                label Item
+                input(name='items' type='text').form-control
+            label.btn-success(onclick='addItem()') Add Item
+            .form-actions.text-center
+                button(type='submit').btn.btn-primary Commit
+    script.
+        function addItem() {
+            $( ".form-group" ).first().clone().insertBefore( ".btn-success" );
+            $( "input" ).last().val("");
+        }
