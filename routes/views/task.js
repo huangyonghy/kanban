@@ -7,8 +7,8 @@ var User = require('../../lib/dblink/User');
 
 /* GET home page. */
 exports = module.exports = function (req, res, next) {
+    var taskName = req.params.task;
     if (req.method == 'GET') {
-        var taskName = req.params.task;
         Task.taskModel.findOne({name: taskName}).populate({path: 'model', model: 'Model'}).exec(function (err, result) {
             if (err) {
                 console.log(err);
@@ -26,8 +26,14 @@ exports = module.exports = function (req, res, next) {
     else if (req.method == 'POST') {
         var users = req.body.users.split(',');
         var state = req.body.state;
-        console.log(users, state);
-        res.redirect('/tasks');
+        Task.updateTask(taskName, users, state, function(err, task){
+            if (err) {
+                next(err)
+            }
+            else {
+                res.redirect('/tasks');
+            }
+        });
     }
 };
 

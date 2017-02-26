@@ -10,14 +10,14 @@ block content
                     td=item
             tr
                 each item in model.items
-                    if item == model.items[model.items.length - 1]
+                    if item == task.state
                         td(id=item ondrop="drop(event)" ondragover="allowDrop(event)")
                             span(id='checkItem' aria-hidden="true" draggable="true" ondragstart="drag(event)").glyphicon.glyphicon-ok
                     else
                         td(id=item ondrop="drop(event)" ondragover="allowDrop(event)").drag
         .form-group
             label User:
-            input(name='users' id='user_input' readonly=true).form-control
+            input(name='users' id='user_input' readonly=true value=task.contactUsers(task)).form-control
         .form-group
             select(id='user')
                 each user in users
@@ -52,7 +52,7 @@ block content
                 user_array = users.split(',')
             }
             ;
-            if (user_array.includes(user) == 0) {
+            if (user_array.indexOf(user) == -1) {
                 user_array.push(user);
             }
             $("#user_input").val(user_array);
