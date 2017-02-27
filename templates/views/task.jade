@@ -72,7 +72,7 @@ block content
         }
         function postContents(url) {
             var users = $("#user_input")[0].value;
-            var state = ($( "td" ).has('span')[0].getAttribute('id'));
+            var state = $( "td" ).has('span')[0].getAttribute('id');
             var params = {users: users, state: state};
             post(url, params);
         }
