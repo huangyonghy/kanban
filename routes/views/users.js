@@ -1,9 +1,10 @@
 var express = require('express');
 var locals = require('../../lib/locals');
 var User = require('../../lib/dblink/User');
+var email = require('../../lib/email');
 
 /* GET home page. */
-exports = module.exports =  function (req, res, next) {
+exports = module.exports = function (req, res, next) {
     if (req.method == 'GET') {
         locals.Locals.section = 'users';
         User.getUsers(function (results) {
@@ -29,7 +30,16 @@ exports = module.exports =  function (req, res, next) {
             else {
                 res.redirect('/users');
             }
-        })
+        });
+        email.sendEmail(req.body.name, req.body.email, 'Hello, world!', function (error, info) {
+            if (error) {
+                return next(error);
+            }
+            else {
+                // console.log('Message sent: ' + info.response);
+                res.redirect('/users');
+            }
+        });
     }
 };
 
